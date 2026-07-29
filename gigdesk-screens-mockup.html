@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>GigDesk — Screen Mockups</title>
+<style>
+  :root{
+    --ink:#1E293B;
+    --ink-soft:#475569;
+    --accent:#0D9488;
+    --accent-dark:#0B7A70;
+    --bg:#F8FAFC;
+    --card:#FFFFFF;
+    --border:#E2E8F0;
+    --draft:#94A3B8;
+    --sent:#3B82F6;
+    --viewed:#F59E0B;
+    --signed:#10B981;
+    --paid:#059669;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    background:var(--bg);
+    color:var(--ink);
+  }
+  .nav{
+    display:flex;
+    gap:6px;
+    padding:16px 20px;
+    background:var(--card);
+    border-bottom:1px solid var(--border);
+    overflow-x:auto;
+    position:sticky;
+    top:0;
+    z-index:10;
+  }
+  .navbtn{
+    font-family:inherit;
+    font-size:13px;
+    font-weight:600;
+    padding:8px 14px;
+    border-radius:999px;
+    border:1px solid var(--border);
+    background:var(--bg);
+    color:var(--ink-soft);
+    cursor:pointer;
+    white-space:nowrap;
+  }
+  .navbtn.active{
+    background:var(--ink);
+    color:white;
+    border-color:var(--ink);
+  }
+  .stage{
+    padding:28px 20px 60px;
+    max-width:1080px;
+    margin:0 auto;
+  }
+  .frame{
+    display:none;
+  }
+  .frame.active{
+    display:block;
+    animation:fade .25s ease;
+  }
+  @keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
+  .browser{
+    background:var(--card);
+    border-radius:14px;
+    border:1px solid var(--border);
+    overflow:hidden;
+    box-shadow:0 8px 24px -8px rgba(30,41,59,.12);
+  }
+  .browserbar{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    padding:10px 14px;
+    background:#F1F5F9;
+    border-bottom:1px solid var(--border);
+  }
+  .dot{width:9px;height:9px;border-radius:50%;background:#CBD5E1;}
+  .urlbox{
+    margin-left:10px;
+    font-size:12px;
+    color:var(--ink-soft);
+    background:white;
+    border-radius:6px;
+    padding:4px 10px;
+    border:1px solid var(--border);
+    flex:1;
+    max-width:320px;
+  }
+  .label{
+    font-size:13px;
+    font-weight:700;
+    color:var(--accent-dark);
+    text-transform:uppercase;
+    letter-spacing:.04em;
+    margin-bottom:8px;
+  }
+  .desc{
+    font-size:14px;
+    color:var(--ink-soft);
+    margin-bottom:18px;
+    max-width:640px;
+  }
+  .content{padding:36px;}
+  h1.h{font-size:26px;margin:0 0 6px;}
+  h2.h{font-size:19px;margin:0 0 4px;}
+  .muted{color:var(--ink-soft);font-size:14px;}
+  .btn{
+    font-family:inherit;
+    font-weight:600;
+    font-size:14px;
+    padding:10px 18px;
+    border-radius:9px;
+    border:none;
+    cursor:pointer;
+  }
+  .btn-primary{background:var(--accent);color:white;}
+  .btn-ghost{background:transparent;color:var(--ink);border:1px solid var(--border);}
+  .card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:18px;
+  }
+  .pill{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    font-size:12px;
+    font-weight:700;
+    padding:4px 10px;
+    border-radius:999px;
+  }
+  .pill-draft{background:#F1F5F9;color:var(--draft);}
+  .pill-sent{background:#EFF6FF;color:var(--sent);}
+  .pill-viewed{background:#FFFBEB;color:var(--viewed);}
+  .pill-signed{background:#ECFDF5;color:var(--signed);}
+  .pill-paid{background:#D1FAE5;color:var(--paid);}
+  table{width:100%;border-collapse:collapse;}
+  th{
+    text-align:left;
+    font-size:12px;
+    color:var(--ink-soft);
+    text-transform:uppercase;
+    letter-spacing:.03em;
+    padding:10px 8px;
+    border-bottom:1px solid var(--border);
+  }
+  td{
+    padding:14px 8px;
+    border-bottom:1px solid var(--border);
+    font-size:14px;
+  }
+  input,select{
+    width:100%;
+    font-family:inherit;
+    font-size:14px;
+    padding:10px 12px;
+    border-radius:8px;
+    border:1px solid var(--border);
+    background:white;
+    color:var(--ink);
+  }
+  .fieldlabel{font-size:12px;font-weight:600;color:var(--ink-soft);margin-bottom:5px;display:block;}
+  .row{display:flex;gap:14px;}
+  .col{flex:1;}
+  .navbar-app{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:16px 32px;
+    border-bottom:1px solid var(--border);
+  }
+  .logo{font-weight:800;font-size:17px;}
+  .logo span{color:var(--accent);}
+  .empty{
+    text-align:center;
+    padding:60px 20px;
+    color:var(--ink-soft);
+  }
+  .sigpad{
+    border:2px dashed var(--border);
+    border-radius:10px;
+    height:140px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--ink-soft);
+    font-size:13px;
+    background:#FAFBFC;
+    margin-bottom:12px;
+  }
+  .badge-step{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin-bottom:22px;
+  }
+  .step{
+    font-size:12px;
+    font-weight:700;
+    padding:6px 12px;
+    border-radius:999px;
+    background:#F1F5F9;
+    color:var(--ink-soft);
+  }
+  .step.done{background:var(--accent);color:white;}
+  .step-line{flex:0 0 20px;height:1px;background:var(--border);}
+</style>
+</head>
+<body>
+
+<div class="nav" id="nav"></div>
+<div class="stage" id="stage"></div>
+
+<script>
+const screens = [
+  {
+    id: 'landing', name: '1. Landing', url: 'gigdesk.app',
+    label: 'Landing Page', desc: 'Public, no login required. One clear value prop, one CTA.',
+    body: `
+      <div style="text-align:center;padding:50px 20px;">
+        <h1 class="h" style="font-size:36px;">Invoices your clients can<br><span style="color:var(--accent)">sign in seconds.</span></h1>
+        <p class="muted" style="max-width:420px;margin:14px auto 26px;">Create an invoice, share a link, watch it get viewed and signed — live.</p>
+        <button class="btn btn-primary">Get started free</button>
+        <div class="row" style="max-width:620px;margin:50px auto 0;">
+          <div class="col card"><h2 class="h">⚡ Fast</h2><p class="muted">Create an invoice in under a minute.</p></div>
+          <div class="col card"><h2 class="h">🔄 Live tracking</h2><p class="muted">See the moment a client opens it.</p></div>
+          <div class="col card"><h2 class="h">✍️ E-sign</h2><p class="muted">No printing, no scanning.</p></div>
+        </div>
+      </div>`
+  },
+  {
+    id: 'login', name: '2. Login/Signup', url: 'gigdesk.app/login',
+    label: 'Login / Sign Up', desc: 'Centered card, minimal fields, inline validation.',
+    body: `
+      <div style="max-width:360px;margin:30px auto;">
+        <h1 class="h" style="text-align:center;">Welcome back</h1>
+        <p class="muted" style="text-align:center;margin-bottom:24px;">Log in to manage your invoices</p>
+        <label class="fieldlabel">Email</label>
+        <input placeholder="you@example.com" style="margin-bottom:14px;">
+        <label class="fieldlabel">Password</label>
+        <input placeholder="••••••••" style="margin-bottom:20px;">
+        <button class="btn btn-primary" style="width:100%;">Log in</button>
+        <p class="muted" style="text-align:center;margin-top:16px;font-size:13px;">Don't have an account? <span style="color:var(--accent);font-weight:600;">Sign up</span></p>
+      </div>`
+  },
+  {
+    id: 'dashboard', name: '3. Dashboard', url: 'gigdesk.app/dashboard',
+    label: 'Dashboard', desc: 'Live-updating invoice list. Status badges change in real time without refresh.',
+    body: `
+      <div class="navbar-app"><div class="logo">Gig<span>Desk</span></div><button class="btn btn-primary">+ New invoice</button></div>
+      <div class="content">
+        <h1 class="h">Your invoices</h1>
+        <p class="muted" style="margin-bottom:20px;">Updates live — no need to refresh.</p>
+        <table>
+          <tr><th>Client</th><th>Invoice #</th><th>Total</th><th>Due</th><th>Status</th></tr>
+          <tr><td>Ahmed Studios</td><td>INV-0004</td><td>PKR 45,000</td><td>Aug 2</td><td><span class="pill pill-viewed">● Viewed</span></td></tr>
+          <tr><td>Zainab Textiles</td><td>INV-0003</td><td>PKR 22,500</td><td>Jul 29</td><td><span class="pill pill-signed">✓ Signed</span></td></tr>
+          <tr><td>Bytewave Co.</td><td>INV-0002</td><td>PKR 60,000</td><td>Jul 25</td><td><span class="pill pill-paid">Paid</span></td></tr>
+          <tr><td>Faisal & Sons</td><td>INV-0001</td><td>PKR 15,000</td><td>Jul 20</td><td><span class="pill pill-sent">Sent</span></td></tr>
+        </table>
+      </div>`
+  },
+  {
+    id: 'create', name: '4. Create Invoice', url: 'gigdesk.app/dashboard/invoices/new',
+    label: 'Create / Edit Invoice', desc: 'Repeatable line items, live total calculation, save as draft or send.',
+    body: `
+      <div class="content">
+        <h1 class="h">New invoice</h1>
+        <p class="muted" style="margin-bottom:20px;">Total updates automatically as you add items.</p>
+        <div class="row" style="margin-bottom:16px;">
+          <div class="col"><label class="fieldlabel">Client name</label><input placeholder="Ahmed Studios"></div>
+          <div class="col"><label class="fieldlabel">Due date</label><input placeholder="02 Aug 2026"></div>
+        </div>
+        <label class="fieldlabel">Line items</label>
+        <div class="card" style="margin-bottom:8px;">
+          <div class="row">
+            <div class="col" style="flex:3;"><input placeholder="Logo design — 3 concepts"></div>
+            <div class="col"><input placeholder="Qty: 1"></div>
+            <div class="col"><input placeholder="Rate: 45,000"></div>
+          </div>
+        </div>
+        <button class="btn btn-ghost" style="margin-bottom:24px;">+ Add item</button>
+        <div style="display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--border);padding-top:16px;">
+          <span style="font-weight:700;font-size:18px;">Total: PKR 45,000</span>
+          <div style="display:flex;gap:10px;">
+            <button class="btn btn-ghost">Save draft</button>
+            <button class="btn btn-primary">Save & get link</button>
+          </div>
+        </div>
+      </div>`
+  },
+  {
+    id: 'detail', name: '5. Invoice Detail', url: 'gigdesk.app/dashboard/invoices/4',
+    label: "Freelancer's Invoice Detail", desc: 'Status timeline + copyable public link.',
+    body: `
+      <div class="content">
+        <h1 class="h">Invoice INV-0004</h1>
+        <p class="muted" style="margin-bottom:20px;">Ahmed Studios · PKR 45,000 · Due Aug 2</p>
+        <div class="badge-step">
+          <span class="step done">Sent</span><div class="step-line"></div>
+          <span class="step done">Viewed</span><div class="step-line"></div>
+          <span class="step">Signed</span><div class="step-line"></div>
+          <span class="step">Paid</span>
+        </div>
+        <div class="card" style="margin-bottom:16px;display:flex;justify-content:space-between;align-items:center;">
+          <span class="muted" style="font-size:13px;">gigdesk.app/invoice/8f2a...</span>
+          <button class="btn btn-ghost">Copy link</button>
+        </div>
+        <button class="btn btn-primary">Mark as paid</button>
+      </div>`
+  },
+  {
+    id: 'public', name: '6. Public Invoice (Client)', url: 'gigdesk.app/invoice/8f2a91',
+    label: 'Public Client-Facing View', desc: 'No login. Canvas signature pad at the bottom — this is the core realtime + canvas screen.',
+    body: `
+      <div class="content">
+        <div style="display:flex;justify-content:space-between;margin-bottom:26px;">
+          <div><h1 class="h" style="font-size:20px;">Noor Fatima — Web Dev</h1><p class="muted" style="font-size:13px;">Invoice INV-0004</p></div>
+          <div style="text-align:right;"><p class="muted" style="font-size:13px;">Bill to</p><p style="font-weight:600;">Ahmed Studios</p></div>
+        </div>
+        <table style="margin-bottom:20px;">
+          <tr><th>Description</th><th>Qty</th><th>Rate</th><th>Amount</th></tr>
+          <tr><td>Logo design — 3 concepts</td><td>1</td><td>45,000</td><td>PKR 45,000</td></tr>
+        </table>
+        <div style="text-align:right;font-weight:700;font-size:18px;margin-bottom:30px;">Total: PKR 45,000</div>
+        <label class="fieldlabel">Sign below to accept this invoice</label>
+        <div class="sigpad">✍️ Draw your signature here</div>
+        <div style="display:flex;gap:10px;">
+          <button class="btn btn-ghost">Clear</button>
+          <button class="btn btn-primary">Sign & accept</button>
+        </div>
+      </div>`
+  },
+  {
+    id: 'settings', name: '7. Settings', url: 'gigdesk.app/dashboard/settings',
+    label: 'Settings', desc: 'Minimal — business info and logout only.',
+    body: `
+      <div class="content" style="max-width:420px;">
+        <h1 class="h">Settings</h1>
+        <label class="fieldlabel" style="margin-top:20px;">Full name</label>
+        <input value="Noor Fatima" style="margin-bottom:14px;">
+        <label class="fieldlabel">Business name</label>
+        <input value="Noor Fatima — Web Dev" style="margin-bottom:24px;">
+        <button class="btn btn-primary" style="margin-right:10px;">Save changes</button>
+        <button class="btn btn-ghost">Log out</button>
+      </div>`
+  }
+];
+
+const nav = document.getElementById('nav');
+const stage = document.getElementById('stage');
+
+screens.forEach((s, i) => {
+  const b = document.createElement('button');
+  b.className = 'navbtn' + (i===0?' active':'');
+  b.textContent = s.name;
+  b.onclick = () => showScreen(i);
+  nav.appendChild(b);
+
+  const frame = document.createElement('div');
+  frame.className = 'frame' + (i===0?' active':'');
+  frame.id = 'frame-'+s.id;
+  frame.innerHTML = `
+    <div class="label">${s.label}</div>
+    <div class="desc">${s.desc}</div>
+    <div class="browser">
+      <div class="browserbar"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="urlbox">${s.url}</div></div>
+      ${s.body}
+    </div>`;
+  stage.appendChild(frame);
+});
+
+function showScreen(idx){
+  document.querySelectorAll('.navbtn').forEach((b,i)=>b.classList.toggle('active', i===idx));
+  document.querySelectorAll('.frame').forEach((f,i)=>f.classList.toggle('active', i===idx));
+}
+</script>
+</body>
+</html>

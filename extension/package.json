@@ -1,0 +1,8 @@
+{
+  "name": "gigdesk-extension",
+  "version": "1.0.0",
+  "description": "GigDesk Chrome Extension",
+  "scripts": {
+    "build": "echo 'Extension ready to load in Chrome'"
+  }
+}
