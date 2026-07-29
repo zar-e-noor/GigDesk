@@ -162,18 +162,18 @@ export default function PublicInvoicePage({ params }: { params: Promise<{ token:
         .from('signatures')
         .getPublicUrl(fileName);
 
-      // Update invoice with signature URL and status
+      // Update invoice using API endpoint with service role key
       const { token } = await resolvedParams;
-      const response = await fetch(`/api/public-invoice/${token}`, {
-        method: 'PATCH',
+      const response = await fetch(`/api/public-invoice/${token}/sign`, {
+        method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          signature_url: publicUrl,
-          status: 'signed' 
-        }),
+        body: JSON.stringify({ signature_url: publicUrl }),
       });
 
-      if (!response.ok) throw new Error('Failed to update invoice');
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to update invoice');
+      }
 
       setSigned(true);
       setInvoice({ ...invoice, signature_url: publicUrl, status: 'signed' });
