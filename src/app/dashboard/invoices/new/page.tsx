@@ -43,11 +43,9 @@ export default function NewInvoicePage() {
     setItems(newItems);
   };
 
-  const total = items.reduce((sum, item) => {
-  const qty = Number(item.quantity) || 1;
-  const rate = Number(item.rate) || 0;
-  return sum + (qty * rate);
-}, 0);
+ const calculateTotal = () => {
+    return items.reduce((sum, item) => sum + item.quantity * item.rate, 0);
+  };
 
   const generateInvoiceNumber = async () => {
     const { data: { user } } = await supabase.auth.getUser();
