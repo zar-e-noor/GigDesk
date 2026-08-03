@@ -172,28 +172,24 @@ export default function NewInvoicePage() {
                     className="mb-0"
                   />
                 </div>
-                <div className="w-28 relative">
-  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs text-gray-400 font-medium z-10 pointer-events-none">
-    Qty:
-  </span>
+                <div className="w-28">
   <Input
     type="number"
-    value={item.quantity}
-    onChange={(e) => updateItem(index, 'quantity', parseInt(e.target.value) || 1)}
-    className="mb-0 pl-11"
+    value={item.quantity || ''}
+    onChange={(e) => updateItem(index, 'quantity', e.target.value === '' ? '' : parseInt(e.target.value))}
+    placeholder="Qty: 1"
+    className="mb-0"
     min="1"
   />
 </div>
 
-<div className="w-36 relative">
-  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs text-gray-400 font-medium z-10 pointer-events-none">
-    Rate:
-  </span>
+<div className="w-36">
   <Input
     type="number"
-    value={item.rate}
-    onChange={(e) => updateItem(index, 'rate', parseFloat(e.target.value) || 0)}
-    className="mb-0 pl-12"
+    value={item.rate || ''}
+    onChange={(e) => updateItem(index, 'rate', e.target.value === '' ? '' : parseFloat(e.target.value))}
+    placeholder="Rate: 45,000"
+    className="mb-0"
     min="0"
   />
 </div>
