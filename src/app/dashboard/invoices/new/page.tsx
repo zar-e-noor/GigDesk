@@ -168,7 +168,7 @@ export default function NewInvoicePage() {
                     type="text"
                     value={item.description}
                     onChange={(e) => updateItem(index, 'description', e.target.value)}
-                    placeholder="Logo design — 3 concepts"
+                    placeholder="Description (e.g. Logo design)"
                     className="mb-0"
                   />
                 </div>
@@ -178,7 +178,7 @@ export default function NewInvoicePage() {
                     type="number"
                     value={item.quantity}
                     onChange={(e) => updateItem(index, 'quantity', parseInt(e.target.value) || 1)}
-                    placeholder="Qty: 1"
+                    placeholder="Qty"
                     className="mb-0"
                     min="1"
                   />
@@ -189,7 +189,7 @@ export default function NewInvoicePage() {
                     type="number"
                     value={item.rate}
                     onChange={(e) => updateItem(index, 'rate', parseFloat(e.target.value) || 0)}
-                    placeholder="Rate: 45,000"
+                    placeholder="Rate"
                     className="mb-0"
                     min="0"
                   />

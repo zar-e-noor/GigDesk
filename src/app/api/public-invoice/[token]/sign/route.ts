@@ -24,11 +24,15 @@ export async function POST(
       );
     }
 
+    // Strip data URL prefix if present and convert to Buffer
+    const base64Data = signature_data.replace(/^data:image\/\w+;base64,/, '');
+    const buffer = Buffer.from(base64Data, 'base64');
+
     // Upload signature to Supabase Storage using service role key
     const fileName = `signature-${token}-${Date.now()}.png`;
     const { data: uploadData, error: uploadError } = await supabase.storage
       .from('signatures')
-      .upload(fileName, signature_data, {
+      .upload(fileName, buffer, {
         contentType: 'image/png',
         upsert: true,
       });
