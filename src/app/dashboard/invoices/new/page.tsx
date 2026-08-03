@@ -172,28 +172,31 @@ export default function NewInvoicePage() {
                     className="mb-0"
                   />
                 </div>
-                <div className="w-24">
-                  <Input
-                    label=""
-                    type="number"
-                    value={item.quantity}
-                    onChange={(e) => updateItem(index, 'quantity', parseInt(e.target.value) || 1)}
-                    placeholder="Qty"
-                    className="mb-0"
-                    min="1"
-                  />
-                </div>
-                <div className="w-32">
-                  <Input
-                    label=""
-                    type="number"
-                    value={item.rate}
-                    onChange={(e) => updateItem(index, 'rate', parseFloat(e.target.value) || 0)}
-                    placeholder="Rate"
-                    className="mb-0"
-                    min="0"
-                  />
-                </div>
+                <div className="w-28 relative">
+  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs text-gray-400 font-medium z-10 pointer-events-none">
+    Qty:
+  </span>
+  <Input
+    type="number"
+    value={item.quantity}
+    onChange={(e) => updateItem(index, 'quantity', parseInt(e.target.value) || 1)}
+    className="mb-0 pl-11"
+    min="1"
+  />
+</div>
+
+<div className="w-36 relative">
+  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs text-gray-400 font-medium z-10 pointer-events-none">
+    Rate:
+  </span>
+  <Input
+    type="number"
+    value={item.rate}
+    onChange={(e) => updateItem(index, 'rate', parseFloat(e.target.value) || 0)}
+    className="mb-0 pl-12"
+    min="0"
+  />
+</div>
                 {items.length > 1 && (
                   <button
                     type="button"
