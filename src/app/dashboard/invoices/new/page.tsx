@@ -23,12 +23,12 @@ export default function NewInvoicePage() {
   const router = useRouter();
   const [clientName, setClientName] = useState('');
   const [dueDate, setDueDate] = useState('');
-  const [items, setItems] = useState<LineItem[]>([{ description: '', quantity: 1, rate: 0 }]);
+  const [items, setItems] = useState<LineItem[]>([{ description: '', quantity: '', rate: '' }]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
   const addItem = () => {
-    setItems([...items, { description: '', quantity: 1, rate: 0 }]);
+    setItems([...items, { description: '', quantity: '', rate: '' }]);
   };
 
   const removeItem = (index: number) => {
@@ -43,9 +43,11 @@ export default function NewInvoicePage() {
     setItems(newItems);
   };
 
-  const calculateTotal = () => {
-    return items.reduce((sum, item) => sum + item.quantity * item.rate, 0);
-  };
+  const total = items.reduce((sum, item) => {
+  const qty = Number(item.quantity) || 1;
+  const rate = Number(item.rate) || 0;
+  return sum + (qty * rate);
+}, 0);
 
   const generateInvoiceNumber = async () => {
     const { data: { user } } = await supabase.auth.getUser();
