@@ -15,20 +15,42 @@ export async function POST(
       process.env.SUPABASE_SERVICE_ROLE_KEY!
     );
 
-    const { signature_url } = body;
+    const { signature_data } = body;
 
-    if (!signature_url) {
+    if (!signature_data) {
       return NextResponse.json(
-        { error: 'signature_url is required' },
+        { error: 'signature_data is required' },
         { status: 400 }
       );
     }
 
-    // Update invoice with signature URL and status
+    // Upload signature to Supabase Storage using service role key
+    const fileName = `signature-${token}-${Date.now()}.png`;
+    const { data: uploadData, error: uploadError } = await supabase.storage
+      .from('signatures')
+      .upload(fileName, signature_data, {
+        contentType: 'image/png',
+        upsert: true,
+      });
+
+    if (uploadError) {
+      console.error('Storage upload error:', uploadError);
+      return NextResponse.json(
+        { error: 'Failed to upload signature' },
+        { status: 500 }
+      );
+    }
+
+    // Get public URL
+    const { data: { publicUrl } } = supabase.storage
+      .from('signatures')
+      .getPublicUrl(fileName);
+
+    // Update invoice with signature URL and status using service role key
     const { data: invoice, error } = await supabase
       .from('invoices')
       .update({
-        signature_url: signature_url,
+        signature_url: publicUrl,
         status: 'signed',
       })
       .eq('public_token', token)
@@ -36,13 +58,14 @@ export async function POST(
       .single();
 
     if (error || !invoice) {
+      console.error('Invoice update error:', error);
       return NextResponse.json(
         { error: 'Failed to update invoice' },
         { status: 400 }
       );
     }
 
-    return NextResponse.json({ success: true, invoice });
+    return NextResponse.json({ success: true, signature_url: publicUrl });
   } catch (error) {
     console.error('Error submitting signature:', error);
     return NextResponse.json(

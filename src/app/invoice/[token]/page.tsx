@@ -144,39 +144,26 @@ export default function PublicInvoicePage({ params }: { params: Promise<{ token:
     setError('');
 
     try {
-      // Convert canvas to data URL
+      // Convert canvas to data URL (base64)
       const signatureData = canvas.toDataURL('image/png');
+      const base64Data = signatureData.split(',')[1];
 
-      // Upload to Supabase Storage
-      const fileName = `signature-${invoice.id}-${Date.now()}.png`;
-      const { data: uploadData, error: uploadError } = await supabase.storage
-        .from('signatures')
-        .upload(fileName, signatureData.split(',')[1], {
-          contentType: 'image/png',
-        });
-
-      if (uploadError) throw uploadError;
-
-      // Get public URL
-      const { data: { publicUrl } } = supabase.storage
-        .from('signatures')
-        .getPublicUrl(fileName);
-
-      // Update invoice using API endpoint with service role key
+      // Send signature data to API endpoint for server-side upload with service role key
       const { token } = await resolvedParams;
       const response = await fetch(`/api/public-invoice/${token}/sign`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ signature_url: publicUrl }),
+        body: JSON.stringify({ signature_data: base64Data }),
       });
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to update invoice');
+        throw new Error(errorData.error || 'Failed to submit signature');
       }
 
+      const result = await response.json();
       setSigned(true);
-      setInvoice({ ...invoice, signature_url: publicUrl, status: 'signed' });
+      setInvoice({ ...invoice, signature_url: result.signature_url, status: 'signed' });
     } catch (err: any) {
       setError(err.message);
     } finally {
