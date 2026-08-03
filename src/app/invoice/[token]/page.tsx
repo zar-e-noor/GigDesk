@@ -23,11 +23,12 @@ interface Invoice {
 }
 
 export default function PublicInvoicePage({ params }: { params: Promise<{ token: string }> }) {
-  const [invoice, setInvoice] = useState<Invoice | null>(null);
+  const [invoice, setInvoice] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [signing, setSigning] = useState(false);
   const [signed, setSigned] = useState(false);
+  const [signing, setSigning] = useState(false);
+  const [signatureLoaded, setSignatureLoaded] = useState(false);
   
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const isDrawing = useRef(false);
@@ -268,11 +269,19 @@ export default function PublicInvoicePage({ params }: { params: Promise<{ token:
                 : 'Thank you for signing this invoice.'}
             </p>
             {invoice.signature_url && (
-              <img
-                src={invoice.signature_url}
-                alt="Signature"
-                className="max-h-24 mx-auto mt-4 border border-green-200 rounded"
-              />
+              <div className="mt-4">
+                {!signatureLoaded && (
+                  <div className="h-24 bg-green-100 rounded animate-pulse mx-auto max-w-xs"></div>
+                )}
+                <img
+                  src={invoice.signature_url}
+                  alt="Signature"
+                  className="max-h-24 mx-auto border border-green-200 rounded"
+                  onLoad={() => setSignatureLoaded(true)}
+                  onError={() => setSignatureLoaded(true)}
+                  style={{ display: signatureLoaded ? 'block' : 'none' }}
+                />
+              </div>
             )}
           </div>
         ) : (

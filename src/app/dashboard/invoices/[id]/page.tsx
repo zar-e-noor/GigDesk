@@ -32,6 +32,7 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
   const [loading, setLoading] = useState(true);
   const [copied, setCopied] = useState(false);
   const [markingPaid, setMarkingPaid] = useState(false);
+  const [signatureLoaded, setSignatureLoaded] = useState(false);
   const resolvedParams = params;
 
   useEffect(() => {
@@ -237,11 +238,19 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
         {invoice.signature_url && (
           <div className="bg-card border border-border rounded-xl p-6 mb-6">
             <h3 className="font-semibold text-ink mb-4">Client Signature</h3>
-            <img
-              src={invoice.signature_url}
-              alt="Client signature"
-              className="max-h-32 border border-border rounded-lg"
-            />
+            <div>
+              {!signatureLoaded && (
+                <div className="h-32 bg-gray-100 rounded animate-pulse"></div>
+              )}
+              <img
+                src={invoice.signature_url}
+                alt="Client signature"
+                className="max-h-32 border border-border rounded-lg"
+                onLoad={() => setSignatureLoaded(true)}
+                onError={() => setSignatureLoaded(true)}
+                style={{ display: signatureLoaded ? 'block' : 'none' }}
+              />
+            </div>
           </div>
         )}
 
