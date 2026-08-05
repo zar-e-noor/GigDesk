@@ -3,28 +3,52 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GigDesk</title>
+  <title>GigDesk Quick Invoice</title>
   <style>
     body {
-      width: 320px;
-      padding: 16px;
+      width: 360px;
+      padding: 20px;
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
       margin: 0;
       background: #F8FAFC;
     }
     h1 {
-      font-size: 18px;
-      margin: 0 0 8px 0;
+      font-size: 20px;
+      margin: 0 0 4px 0;
       color: #1E293B;
+      font-weight: 700;
     }
-    p {
+    .subtitle {
       font-size: 13px;
+      color: #64748B;
+      margin: 0 0 20px 0;
+    }
+    .form-group {
+      margin-bottom: 16px;
+    }
+    label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
       color: #475569;
-      margin: 0 0 16px 0;
+      margin-bottom: 6px;
+    }
+    input {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #CBD5E1;
+      border-radius: 8px;
+      font-size: 14px;
+      box-sizing: border-box;
+      transition: border-color 0.2s;
+    }
+    input:focus {
+      outline: none;
+      border-color: #0D9488;
     }
     button {
       width: 100%;
-      padding: 10px;
+      padding: 12px;
       background: #0D9488;
       color: white;
       border: none;
@@ -32,25 +56,72 @@
       font-size: 14px;
       font-weight: 600;
       cursor: pointer;
+      transition: background 0.2s;
     }
     button:hover {
       background: #0B7A70;
     }
-    .status {
+    button:disabled {
+      background: #94A3B8;
+      cursor: not-allowed;
+    }
+    .secondary-btn {
+      background: transparent;
+      color: #0D9488;
+      border: 1px solid #0D9488;
       margin-top: 12px;
-      padding: 8px;
-      background: #E2E8F0;
-      border-radius: 6px;
-      font-size: 12px;
+    }
+    .secondary-btn:hover {
+      background: #F0FDFA;
+    }
+    .status {
+      margin-top: 16px;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 13px;
       display: none;
+    }
+    .status.success {
+      background: #D1FAE5;
+      color: #059669;
+    }
+    .status.error {
+      background: #FEE2E2;
+      color: #DC2626;
+    }
+    .status.loading {
+      background: #E0F2FE;
+      color: #0369A1;
     }
   </style>
 </head>
 <body>
-  <h1>GigDesk</h1>
-  <p>Quick invoice creation from your browser</p>
-  <button id="openDashboard">Open Dashboard</button>
+  <h1>GigDesk Quick Invoice</h1>
+  <p class="subtitle">Generate invoices directly from your browser</p>
+  
+  <form id="invoiceForm">
+    <div class="form-group">
+      <label for="clientName">Client Name</label>
+      <input type="text" id="clientName" placeholder="e.g. Ahmed Studios" required>
+    </div>
+    
+    <div class="form-group">
+      <label for="description">Line Item Description</label>
+      <input type="text" id="description" placeholder="e.g. Logo design" required>
+    </div>
+    
+    <div class="form-group">
+      <label for="amount">Amount (PKR)</label>
+      <input type="number" id="amount" placeholder="e.g. 45000" min="0" required>
+    </div>
+    
+    <button type="submit" id="generateBtn">Generate & Copy Invoice Link</button>
+  </form>
+  
+  <button id="openDashboard" class="secondary-btn">Open Dashboard</button>
+  
   <div id="status" class="status"></div>
+  
   <script src="popup.js"></script>
 </body>
 </html>

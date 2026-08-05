@@ -1,13 +1,16 @@
 {
   "manifest_version": 3,
-  "name": "GigDesk",
+  "name": "GigDesk Quick Invoice",
   "version": "1.0.0",
-  "description": "Create and manage e-signed invoices for Pakistani freelancers",
+  "description": "Quickly generate and share invoices from your browser",
   "permissions": [
+    "activeTab",
     "storage",
-    "activeTab"
+    "scripting",
+    "clipboardWrite"
   ],
   "host_permissions": [
+    "https://gig-desk-seven.vercel.app/*",
     "https://*.supabase.co/*"
   ],
   "action": {
