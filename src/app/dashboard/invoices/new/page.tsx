@@ -23,12 +23,12 @@ export default function NewInvoicePage() {
   const router = useRouter();
   const [clientName, setClientName] = useState('');
   const [dueDate, setDueDate] = useState('');
-  const [items, setItems] = useState<LineItem[]>([{ description: '', quantity: '', rate: '' }]);
+  const [items, setItems] = useState<LineItem[]>([{ description: '', quantity: 1, rate: 0 }]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
   const addItem = () => {
-    setItems([...items, { description: '', quantity: '', rate: '' }]);
+    setItems([...items, { description: '', quantity: 1, rate: 0 }]);
   };
 
   const removeItem = (index: number) => {
@@ -43,7 +43,7 @@ export default function NewInvoicePage() {
     setItems(newItems);
   };
 
- const calculateTotal = () => {
+  const calculateTotal = () => {
     return items.reduce((sum, item) => sum + item.quantity * item.rate, 0);
   };
 
@@ -172,27 +172,28 @@ export default function NewInvoicePage() {
                     className="mb-0"
                   />
                 </div>
-                <div className="w-28">
-  <Input
-    type="number"
-    value={item.quantity || ''}
-    onChange={(e) => updateItem(index, 'quantity', e.target.value === '' ? '' : parseInt(e.target.value))}
-    placeholder="Qty: 1"
-    className="mb-0"
-    min="1"
-  />
-</div>
-
-<div className="w-36">
-  <Input
-    type="number"
-    value={item.rate || ''}
-    onChange={(e) => updateItem(index, 'rate', e.target.value === '' ? '' : parseFloat(e.target.value))}
-    placeholder="Rate: 45,000"
-    className="mb-0"
-    min="0"
-  />
-</div>
+                <div className="w-24">
+                  <Input
+                    label=""
+                    type="number"
+                    value={item.quantity}
+                    onChange={(e) => updateItem(index, 'quantity', parseInt(e.target.value) || 1)}
+                    placeholder="Qty"
+                    className="mb-0"
+                    min="1"
+                  />
+                </div>
+                <div className="w-32">
+                  <Input
+                    label=""
+                    type="number"
+                    value={item.rate}
+                    onChange={(e) => updateItem(index, 'rate', parseFloat(e.target.value) || 0)}
+                    placeholder="Rate"
+                    className="mb-0"
+                    min="0"
+                  />
+                </div>
                 {items.length > 1 && (
                   <button
                     type="button"

@@ -1,7 +1,8 @@
-const API_BASE_URL = 'https://gig-desk-seven.vercel.app';
+// Safe declaration to prevent duplicate error
+window.API_BASE_URL = window.API_BASE_URL || 'https://gig-desk-seven.vercel.app';
 
 document.getElementById('openDashboard').addEventListener('click', () => {
-  chrome.tabs.create({ url: `${API_BASE_URL}/dashboard` });
+  chrome.tabs.create({ url: `${window.API_BASE_URL}/dashboard` });
 });
 
 document.getElementById('invoiceForm').addEventListener('submit', async (e) => {
@@ -10,6 +11,11 @@ document.getElementById('invoiceForm').addEventListener('submit', async (e) => {
   const clientName = document.getElementById('clientName').value;
   const description = document.getElementById('description').value;
   const amount = document.getElementById('amount').value;
+  
+  // Safely get quantity without hardcoding default value in UI
+  const qtyInput = document.getElementById('quantity');
+  const quantity = (qtyInput && qtyInput.value) ? parseInt(qtyInput.value) : 1;
+
   const generateBtn = document.getElementById('generateBtn');
   const status = document.getElementById('status');
   
@@ -21,7 +27,7 @@ document.getElementById('invoiceForm').addEventListener('submit', async (e) => {
   status.textContent = 'Creating invoice...';
   
   try {
-    const response = await fetch(`${API_BASE_URL}/api/extension/create-invoice`, {
+    const response = await fetch(`${window.API_BASE_URL}/api/extension/create-invoice`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -30,6 +36,7 @@ document.getElementById('invoiceForm').addEventListener('submit', async (e) => {
         client_name: clientName,
         description: description,
         amount: parseFloat(amount),
+        quantity: quantity
       }),
     });
     
@@ -40,7 +47,7 @@ document.getElementById('invoiceForm').addEventListener('submit', async (e) => {
     }
     
     // Copy to clipboard
-    const invoiceUrl = `${API_BASE_URL}/invoice/${data.public_token}`;
+    const invoiceUrl = `${window.API_BASE_URL}/invoice/${data.public_token}`;
     await navigator.clipboard.writeText(invoiceUrl);
     
     // Show success state
@@ -63,7 +70,7 @@ document.getElementById('invoiceForm').addEventListener('submit', async (e) => {
 // Check if user is authenticated
 chrome.storage.local.get(['supabase_token'], (result) => {
   const status = document.getElementById('status');
-  if (result.supabase_token) {
+  if (result && result.supabase_token) {
     status.style.display = 'block';
     status.className = 'status success';
     status.textContent = '✓ Connected to GigDesk';
