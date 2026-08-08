@@ -198,13 +198,4 @@ Use this file as reference for implementing the UI components.
 3. **Desktop App**: Wrap web app functionality in Tauri
 4. **Chrome Extension**: Quick access to dashboard
 
-## Security Notes
 
-- **Never commit** `.env` files or actual API keys
-- Service role key should only be used server-side
-- RLS policies ensure users can only access their own data
-- Public invoice access is controlled via secure API routes
-
-## License
-
-Proprietary - All rights reserved
